@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="description" content="Conf@42 - 42AI, 14 novembre 2017">
+        <meta name="author" content="Régis Behmo">
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+
+        <title>Megadata vs Giant Algorithms: Bas-Fonds et Tuyauterie du Machine Learning | 42AI, Nov 14th 2017</title>
+        <link rel="stylesheet" href="static/css/reveal.css">
+        <link rel="stylesheet" href="static/css/theme/night.css">
+        <link rel="stylesheet" href="static/css/font-awesome.min.css">
+        <link rel="stylesheet" href="static/css/highlightjs/monokai.css">
+
+        <!-- Printing and PDF exports -->
+        <script>
+            var link = document.createElement( 'link' );
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = window.location.search.match( /print-pdf/gi ) ? 'static/css/print/pdf.css' : 'static/css/print/paper.css';
+            document.getElementsByTagName( 'head' )[0].appendChild( link );
+        </script>
+
+        <style>
+            .orange, h1.orange, h2.orange, h3.orange {
+                color: #e7ad52;
+            }
+            .reveal table th, .reveal table td {
+                text-align: center;
+            }
+            .reveal table th:not(:last-child), .reveal table td:not(:last-child) {
+                border-right: 1px solid white
+            }
+            .reveal .green {
+                color: #17ff2e;
+            }
+            .discrete {
+                opacity: 0.2;
+            }
+            .not-discrete {
+                opacity: 1;
+            }
+            .reveal .stupid {
+                font-family: Comic Sans MS;
+                font-weight: bold;
+            }
+            .fragment.zerospace:not(.current-fragment) {
+                position: absolute;
+                left: -10000px;
+            }
+            .reveal .small-text {
+                font-size: 80%;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="reveal">
+            <div class="slides">
+                <section data-background-image="static/img/megaoctopusvsgiantshark.jpg">
+                    <h2>Megadata vs Giant Algorithms</h2>
+                    <h3>Bas-Fonds et Tuyauterie du Machine Learning</h3>
+                    <p><a href="https://minutebutterfly.com">Régis Behmo</a>
+                    <a href="https://github.com/regisb"><i class="fa fa-github"></i></a>
+                    <a href="https://twitter.com/regisb"><i class="fa fa-twitter"></i></a>
+                    <a href="https://stackoverflow.com/users/356528/r%c3%a9gis-b?tab=profile"><i class="fa fa-stack-overflow"></i></a>
+                    @regisb<br></p>
+                    <p>42AI, 14 novembre 2017</p>
+                </section>
+
+                <section>
+                    <h3 class="fragment" data-fragment-index="4">0. machine learning? wat?</h3>
+                    <h3 class="fragment" data-fragment-index="1">1. Comment faire du machine learning</h3>
+                    <h3 class="fragment" data-fragment-index="2">2. Comment faire du machine learning</h3>
+                    <h3 class="fragment" data-fragment-index="3">3. Superman</h3>
+                </section>
+
+                <!-- ====================== Section 0 ===================== -->
+
+                <section>
+                    <h3>0. machine learning? wat?</h3>
+                    <h3 class="discrete">1. Comment faire du machine learning</h3>
+                    <h3 class="discrete">2. Comment faire du machine learning</h3>
+                    <h3 class="discrete">3. Superman</h3>
+                </section>
+
+                <section>
+                    <h3>À partir de sources d'informations partielles, générer de manière automatique de nouvelles informations qui soient les plus correctes possibles.</h3>
+                </section>
+
+                <section data-background-image="static/img/pedestrian-detection.jpg">
+                    <h3>Quelles sont les positions des piétons dans cette image ?</h3>
+                </section>
+
+                <section data-background-image="static/img/weather-dark.png">
+                    <h3>Quelle température fera-t-il demain ?</h3>
+                </section>
+
+                <section data-background-image="static/img/heroquest.jpg">
+                    <h3>Quel coup dois-je jouer pour gagner ?</h3>
+                </section>
+
+                <section data-background-image="static/img/starcraft.jpg">
+                    <h3>Quel coup dois-je jouer pour gagner ?</h3>
+                    <p><a href="https://www.cs.mun.ca/~dchurchill/starcraftaicomp/">https://www.cs.mun.ca/~dchurchill/starcraftaicomp/</a></p>
+                </section>
+
+                <section data-background-image="static/img/go.jpg">
+                    <h3>Quel coup dois-je jouer pour gagner ?</h3>
+                </section>
+
+                <section data-background-image="static/img/face-reconstruction.png">
+                    <h3>Quel est le modèle 3D de cet objet ?</h3>
+                    <small>Source: "Total Moving Face Reconstruction", ECCV 2014</small>
+                </section>
+
+                <section data-background-image="static/img/crimescene.jpg">
+                    <h3>Qui a commis ce crime ?</h3>
+                </section>
+
+                <!--Apprentissage supervisé/semi-supervisé/non supervisé-->
+                <section>
+                    <p>À partir de <span class="fragment highlight-green">sources d'informations partielles</span>, générer de manière automatique de nouvelles informations qui soient les plus correctes possibles.</p>
+                    <h4 class="fragment">Apprentissage supervisé</h4>
+                    <h4 class="fragment">Apprentissage semi supervisé</h4>
+                    <h4 class="fragment">Apprentissage non supervisé</h4>
+                </section>
+                <section data-background-image="static/img/pedestrian-detection.jpg">
+                    <p>À partir de <span class="green">sources d'informations partielles</span>, générer de manière automatique de nouvelles informations qui soient les plus correctes possibles.</p>
+                    <h4>Quelles sont les positions des piétons dans cette image ?</h4>
+                    <table class="fragment">
+                        <tr><th colspan="2">Apprentissage <span class="green">supervisé</span></th></tr>
+                        <tr><th>Données d'apprentissage</th><th>Données de test</th></tr>
+                        <tr><td><img src="static/img/pedestrian-supervised.png"></td><td><img src="static/img/pedestrian-test.png"></td></tr>
+                    </table>
+                </section>
+                <section data-background-image="static/img/pedestrian-detection.jpg">
+                    <p>À partir de <span class="green">sources d'informations partielles</span>, générer de manière automatique de nouvelles informations qui soient les plus correctes possibles.</p>
+                    <h4>Quelles sont les positions des piétons dans cette image ?</h4>
+                    <table>
+                        <tr><th colspan="2">Apprentissage <span class="green">semi supervisé</span></th></tr>
+                        <tr><th>Données d'apprentissage</th><th>Données de test</th></tr>
+                        <tr><td><img src="static/img/pedestrian-semisupervised.png"></td><td><img src="static/img/pedestrian-test.png"></td></tr>
+                    </table>
+                </section>
+                <section data-background-image="static/img/pedestrian-detection.jpg">
+                    <p>À partir de <span class="green">sources d'informations partielles</span>, générer de manière automatique de nouvelles informations qui soient les plus correctes possibles.</p>
+                    <h4>Quelles sont les positions des piétons dans cette image ?</h4>
+                    <table>
+                        <tr><th colspan="2">Apprentissage <span class="green">non supervisé</span></th></tr>
+                        <tr><th>Données d'apprentissage</th><th>Données de test</th></tr>
+                        <tr><td><img src="static/img/wat.jpg"></td><td><img src="static/img/pedestrian-test.png"></td></tr>
+                    </table>
+                </section>
+                <section>
+                    <p>À partir de <span class="green">sources d'informations partielles</span>, générer de manière automatique de nouvelles informations qui soient les plus correctes possibles.</p>
+                    <h4>Apprentissage supervisé</h4>
+                    <h4>Apprentissage semi supervisé</h4>
+                    <h4>Apprentissage non supervisé</h4>
+                </section>
+
+                <!--Classification binaire/multi-classes/régression-->
+                <section>
+                    <p>À partir de sources d'informations partielles, générer de manière automatique de <span class="fragment highlight-green">nouvelles informations</span> qui soient les plus correctes possibles.</p>
+                    <h4 class="fragment">Classification binaire : 0 ou 1</h4>
+                    <h4 class="fragment">Classification multi-classes : 0, 1, 2... ou n</h4>
+                    <h4 class="fragment">Régression : [0, +&#8734;[</h4>
+                </section>
+                <section>
+                    <p>À partir de sources d'informations partielles, générer de manière automatique de <span class="green">nouvelles informations</span> qui soient les plus correctes possibles.</p>
+                    <h4 class="fragment"><span class="green">Classification binaire</span> : 0 ou 1</h4>
+                    <p class="fragment">Est-ce que cet internaute va cliquer sur cette pub ?</p>
+                    <p class="fragment">Ce pixel appartient-il à un piéton ?</p>
+                    <p class="fragment">Est-ce que cette personne va rembourser son prêt ?</p>
+                </section>
+                <section>
+                    <p>À partir de sources d'informations partielles, générer de manière automatique de <span class="green">nouvelles informations</span> qui soient les plus correctes possibles.</p>
+                    <h4 class="fragment"><span class="green">Classification multi-classes</span> : 0, 1, 2... ou n</h4>
+                    <p class="fragment">Quel est le genre de ce film ?</p>
+                    <p class="fragment">Pour qui cette personne va-t-elle voter ?</p>
+                    <p class="fragment">Quelle est l'orientation sexuelle de cette personne ?</p>
+                </section>
+                <section>
+                    <p>À partir de sources d'informations partielles, générer de manière automatique de <span class="green">nouvelles informations</span> qui soient les plus correctes possibles.</p>
+                    <h4 class="fragment"><span class="green">Régression</span> : [0, +&#8734;[</h4>
+                    <p class="fragment">Quelle température fera-t-il demain ? (]-&#8734;, +&#8734;[)</p>
+                    <p class="fragment">Quelle est ma probabilité de gagner si je joue ce coup ? ([0, 1])</p>
+                    <p class="fragment">Quelle est mon espérance de vie ?</p>
+                </section>
+
+                <!--Apprentissage supervisé/semi-supervisé/non supervisé-->
+                <section>
+                    <p>À partir de sources d'informations partielles, générer de manière automatique de nouvelles informations qui soient <span class="fragment highlight-green">les plus correctes possibles.</span></p>
+                    <h4 class="fragment">Précision / Rappel</h4>
+                    <h4 class="fragment">Distance quadratique</h4>
+                    <h4 class="fragment">Mean average precision</h4>
+                    <h4 class="fragment">...</h4>
+                </section>
+                <!--<section>-->
+                    <!--<h3>Quel est la position 3D des doigts de la main d'après cette image ?</h3>-->
+                    <!--<p>Données d'apprentissages : Vidéos pour lesquelles les positions des phalanges sont toutes connues</p>-->
+                <!--</section>-->
+
+                <!--<section>-->
+                    <!--<h3>Quel coup dois-je jouer pour gagner ?</h3>-->
+                    <!--<p>Parties générées aléatoirement pour créer un jeu de données d'apprentissage synthétique</p>-->
+                <!--</section>-->
+
+                <!--<section>-->
+                    <!--<h3>Quel coup dois-je jouer pour gagner ?</h3>-->
+                    <!--<p>Parties générées aléatoirement pour créer un jeu de données d'apprentissage synthétique</p>-->
+                <!--</section>-->
+
+                <section>
+                    <h3><i class="fa fa-warning"></i> Problème mal posé</h3>
+                    <p class="fragment">Problème pour lequel il n'existe pas de solution ou il existe plusieurs solutions</p>
+                    <p class="fragment"><small>(en gros)</small></p>
+                </section>
+                <section data-background-image="static/img/face-reconstruction.png">
+                    <h3>Quel est le modèle 3D de cet objet ?</h3>
+                    <small>Source: "Total Moving Face Reconstruction", ECCV 2014</small>
+                </section>
+
+
+                <section>
+                    <!--TODO ?-->
+                    <!--<h3>Problème mal posé</h3>-->
+                    <!--<h3>Quelle est la position 3D des doigts de la main d'après cette image ?</h3>-->
+                    <!--<p>Modèle 3D <i>a priori</i> de la main</p>-->
+                </section>
+
+                <section>
+                    <p>À partir de sources d'informations partielles, <span class="fragment highlight-green">générer de manière automatique</span> de nouvelles informations qui soient les plus correctes possibles.</p>
+                </section>
+                <section>
+                    <h1>?</h1>
+                </section>
+                <section data-background="static/img/stand-back-xkcd.png" data-background-size="contain"></section>
+
+                <!-- ====================== Section 1 ===================== -->
+
+                <section>
+                    <h3 class="discrete">0. machine learning? wat?</h3>
+                    <h3>1. Comment faire du machine learning</h3>
+                    <h3 class="discrete">2. Comment faire du machine learning</h3>
+                    <h3 class="discrete">3. Superman</h3>
+                </section>
+
+                <section>
+                    <h3>Mission : Implémenter <code>solve_my_problem</code></h3>
+                    <pre><code>
+                        solution = <span class="orange">solve_my_problem()</span>;
+                    </code></pre>
+                </section>
+
+                <section data-background-image="static/img/weather-dark.png">
+                    <h3>Mission : Implémenter <code>solve_my_problem</code></h3>
+                    <pre><code>
+                        solution = solve_my_problem(<span class="orange">"weather_prediction"</span>);
+                    </code></pre>
+                </section>
+
+                <section data-background-image="static/img/weather-dark.png">
+                    <h3>Mission : Implémenter <code>solve_my_problem</code></h3>
+                    <pre><code>
+                        solution = solve_my_problem("weather_prediction",
+                                                    <span class="orange">training_data, test_data</span>);
+                    </code></pre>
+                </section>
+
+                <section data-background-image="static/img/weather-dark.png">
+                    <h3>Mission : Implémenter <code>solve_my_problem</code></h3>
+                    <pre><code>
+                        solution = solve_my_problem("weather_prediction",
+                                                    training_data, test_data,
+                                                    <span class="orange">performance_evaluation_function</span>);
+                    </code></pre>
+                </section>
+
+                <section>
+                    <h1>Machine Learning</h1>
+                    <h1>==</h1>
+                    <h1>Recherche</h1>
+                </section>
+                <section>
+                    <h1 class="rainbow">Machine Learning</h1>
+                    <h1 class="rainbow">==</h1>
+                    <h1 class="rainbow">Recherche</h1>
+                </section>
+                <section>
+                    <h2 class="rainbow">Recherche wtf ?</h2>
+                </section>
+                <section data-background="static/img/onedoesnotsimply.png" data-background-size="contain"></section>
+                <section>
+                    <h2>Faire de la recherche</h2>
+                    <h3 class="stupid fragment">Approche #1</h3>
+                    <h3 class="rainbow fragment">Approche #2</h3>
+                </section>
+
+                <section>
+                    <h2 class="stupid">Machine Learning : Approche #1</h2>
+                    <ol>
+                        <li>Trouver un problème</li>
+                        <li>Proposer une solution</li>
+                        <li>Tester la solution</li>
+                        <li>Si ça ne marche pas, retourner en 2</li>
+                        <li>Publier/Mettre en prod \o/</li>
+                    </ol>
+                </section>
+                <section class="stupid">
+                    <p class="fragment">"Bah je comprends pas ça marchait bien sur mes données"</p>
+                    <p class="fragment">"C'EST LEEEEEEEEEEEEEEENT"</p>
+                    <p class="fragment">"Ça marche quand même moins bien que &lt;methode X&gt;"</p>
+                    <p class="fragment">"Elle est bien cette méthode mais elle existe déjà (en mieux)"</p>
+                </section>
+                <section>
+                    <h2 class="stupid">Approche #1</h2>
+                    <ol>
+                        <li>Trouver un problème</li>
+                        <li>Proposer une solution</li>
+                        <li>Tester la solution</li>
+                        <li>Si ça ne marche pas, retourner en 2</li>
+                        <li>Publier/Mettre en prod \o/</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <h2 class="rainbow">Approche #2</h2>
+                    <ol>
+                        <li>Trouver un problème</li>
+                        <li>Créer un jeu de données adapté</li>
+                        <li>Choisir une métrique</li>
+                        <li>Tester les méthodes existantes sur ce jeu de données</li>
+                        <li>Créer une baseline</li>
+                        <li>Identifier les limites de la baseline</li>
+                        <li>Proposer une solution qui résout ces limites</li>
+                        <li>Tester la solution</li>
+                        <li>Si ça ne marche pas, retourner en 7</li>
+                        <li>Publier/Mettre en prod \o/</li>
+                    </ol>
+                </section>
+                <section>
+                    <h3>1. Trouver un problème</h3>
+                </section>
+                <section>
+                    <h3>2. Créer un jeu de données adapté</h3>
+                    <p class="fragment">1-3 jours de travail</p>
+                    <p class="fragment">Programme quick'n dirty pour semi-automatiser</p>
+                    <p class="fragment">Reprise automatique</p>
+                    <p class="fragment">Visualisation du jeu de données</p>
+                </section>
+                <section>
+                    <h3>3. Choisir une métrique</h3>
+                </section>
+                <section>
+                    <h3>4. Tester les méthodes existantes sur ce jeu de données</h3>
+                    <p class="fragment stupid">"Personne n'a jamais travaillé sur ce sujet"</p>
+                    <p class="fragment stupid">"Personne n'a jamais publié sur ce sujet"</p>
+                    <p class="fragment stupid">"J'ai pas le temps"</p>
+                </section>
+
+                <section>
+                    <h3>"... se tenir sur les épaules des géants."</h3>
+                </section>
+                <section data-background-image="static/img/newton.jpg">
+                    <h3><i>"If I have seen further it is by standing on the shoulders of Giants."</i>, Isaac Newton</h3>
+                </section>
+                <section data-background-image="static/img/girafes.jpg" data-background-size="contain">
+                    <h3><i>"If I have seen further it is by standing on the shoulders of Giants."</i>, Isaac Newton</h3>
+                </section>
+                <section>
+                    <h3 class="fragment">Il y a plein de gens qui font du machine learning</h3>
+                    <h3 class="fragment">Ils en font depuis très longtemps</h3>
+                    <h3 class="fragment">Ils sont très malins</h3>
+                    <h3 class="fragment">Ils ont faim</h3>
+                </section>
+                <section>
+                    <h3>5. Créer une baseline</h3>
+                    <h3>6. Identifier les limites de la baseline</h3>
+                    <h3>7. Proposer une solution qui résout ces limites</h3>
+                    <div class="fragment">
+                        <p>Solution puissante mais pas alambiquée</p>
+                        <p>Méthode connue et éprouvée</p>
+                        <p>Implémentation de référence</p>
+                    </div>
+                </section>
+                <section>
+                    <h2 class="rainbow">Approche #2</h2>
+                    <ol>
+                        <li>Trouver un problème</li>
+                        <li>Créer un jeu de données adapté</li>
+                        <li>Choisir une métrique</li>
+                        <li>Tester les méthodes existantes sur ce jeu de données</li>
+                        <li>Créer une baseline</li>
+                        <li>Identifier les limites de la baseline</li>
+                        <li>Proposer une solution qui résout ces limites</li>
+                        <li>Tester la solution</li>
+                        <li>Si ça ne marche pas, retourner en 7</li>
+                        <li>Publier/Mettre en prod \o/</li>
+                    </ol>
+                </section>
+                <section>
+                    <h2 class="rainbow">Approche #2</h2>
+                    <ol>
+                        <li class="discrete">Trouver un problème</li>
+                        <li class="discrete">Créer un jeu de données adapté</li>
+                        <li class="discrete">Choisir une métrique</li>
+                        <li class="discrete">Tester les méthodes existantes sur ce jeu de données</li>
+                        <li class="discrete">Créer une baseline</li>
+                        <li class="discrete">Identifier les limites de la baseline</li>
+                        <li class="discrete">Proposer une solution qui résout ces limites</li>
+                        <li class="discrete">Tester la solution</li>
+                        <li class="discrete">Si ça ne marche pas, retourner en 7</li>
+                        <li>Publier/Mettre en prod \o/</li>
+                    </ol>
+                </section>
+                <section>
+                    <h1>?</h1>
+                </section>
+
+                <!-- ====================== Section 2 ===================== -->
+                <section>
+                    <h3 class="discrete">0. machine learning? wat?</h3>
+                    <h3 class="discrete">1. Comment faire du machine learning</h3>
+                    <h3>2. Comment faire du machine learning</h3>
+                    <h3 class="discrete">3. Superman</h3>
+                </section>
+
+                <section>
+                    <h3>La data science c'est fastoche</h3>
+                    <p class="fragment">Blogs</p>
+                    <p class="fragment">Librairies libres</p>
+                    <p class="fragment">Articles scientifiques</p>
+                    <p class="fragment">Cours en ligne</p>
+                </section>
+
+                <section>
+                    <img src="static/img/laptop.svg">
+                    <p class="fragment">R</p>
+                    <p class="fragment">Matlab</p>
+                    <p class="fragment">(╯° °）╯︵ ┻━┻</p>
+                </section>
+                <section data-background-image="static/img/needbiggerlaptop.jpg" data-background-size="contain"></section>
+                <section data-background-image="static/img/scalingout.svg" data-background-size="contain"></section>
+
+                <section>
+                    <h2>UltraPoulpe Inc.</h2>
+                    <h3 class="fragment">"Rencontrez des poulpes pas collants à côté de chez vous"</h3>
+                </section>
+
+                <section>
+                    <h3>Cette image est-elle déjà présente dans ma base ?</h3>
+                    <pre><code class="python">def is_image_present(image):
+    for training_image in DATABASE:
+        if distance(image, training_image) &lt; THRESHOLD:
+            return True
+    return False</code></pre>
+                </section>
+                <section>
+                    <pre><code class="python">def is_image_present(image):
+    min_distance = fast_min_distance(image, DATABASE)
+    return min_distance &lt; THRESHOLD</code></pre>
+                    <img src="static/img/fast_min_distance_local.svg" style="max-width: 40%;">
+                </section>
+                <section>
+                    <pre><code class="python">def is_image_present(image):
+    for partition in DATABASE_PARTITIONS:
+        if fast_min_distance(image, partition) < THRESHOLD:
+            return True
+    return False</code></pre>
+                    <img src="static/img/fast_min_distance_distributed.svg" style="max-width: 60%;">
+                </section>
+
+                <section>
+                  <h3>Map/Reduce</h3>
+
+                  <p>map : transformation d'un élément</p>
+                  <pre><code class="python">def map(x):
+  return x*x
+</code></pre>
+                  <p>reduce : aggrégation de plusieurs éléments</p>
+                  <pre><code class="python">def reduce(x, y):
+  return x + y
+</code></pre>
+                </section>
+                <section data-background-image="static/img/mapreduce.svg" data-background-size="contain"></section>
+                <section>
+                  <h3>Hadoop</h3>
+                  <img src="static/img/hadoop.svg">
+                </section>
+                <section>
+                  <h3>Spark</h3>
+                  <img src="static/img/spark.svg">
+                </section>
+                <section>
+                    <table>
+                        <tr class="orange">
+                            <th>Hadoop</th>
+                            <th>Spark</th>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Write to disk (HDFS)</td>
+                            <td>In-memory</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Native data structures</td>
+                            <td>Resilient Distributed Datasets (RDD)</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Java (+ Hadoop streaming)</td>
+                            <td>Java + Scala + Python + R</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Pluggable SQL (Hive)</td>
+                            <td>Spark SQL (native)</td>
+                        </tr>
+                        <tr class="fragment">
+                            <td>Pluggable ML</td>
+                            <td>Spark ML (native)</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h2>Wordcount! \o/</h2>
+                    <p>En Python :</p>
+                    <pre><code class="python">
+words = open("iliad.mb.txt").read().split()
+counts = {}
+for word in words:                         
+  if word not in counts:
+      counts[word] = 0
+  counts[word] += 1
+sorted(counts.items(), key=lambda wc: -wc[1])[:5]
+</code></pre>
+
+                    <div class="fragment">
+                      <p>En Spark :</p>
+                      <pre><code class="python">sc.textFile("iliad.mb.txt")\
+    .flatMap(lambda sentence: sentence.split())\
+    .map(lambda word: (word, 1))\
+    .reduceByKey(lambda v1, v2: v1 + v2)\
+    .sortBy(lambda wc: -wc[1])\
+    .take(5)</code></pre>
+<pre><code class="python">[('the', 9573), ('and', 6481), ('of', 5584), ('to', 3291), ('his', 2487)]</code></pre>
+                    </div>
+                </section>
+
+                <section data-background-image="static/img/distributed-spark-nohdfs.svg" data-background-size="contain"></section>
+                <section data-background-image="static/img/distributed-spark-partial.svg" data-background-size="contain"></section>
+                <section data-background-image="static/img/distributed-spark.svg" data-background-size="contain"></section>
+                <section>
+                    <h3>Kafka: a distributed streaming platform</h3>
+                    <img src="static/img/kafka.svg" style="max-width: 50%;">
+                    <pre><code class="python">producer = KafkaProducer()
+producer.send("mypartition", "mydata")</code></pre>
+                    <pre><code class="python">consumer = KafkaConsumer("mypartition", group_id="mygroup")
+for message in consumer:
+    ...</code></pre>
+                </section>
+                <section>
+                    <h3>Kafka: a distributed streaming platform</h3>
+                    <img src="static/img/kafka.svg" style="max-width: 50%;">
+                    <div class="fragment">
+                        <p>FIFO (mais pas que)</p>
+                        <p>In-memory, déborde sur disque</p>
+                        <p>Passage à l'échelle horizontal</p>
+                        <p>Consommateurs multiples</p>
+                        <p>File de messages, tâches asynchrones, buffer...</p>
+                    </div>
+                </section>
+                <section data-background-image="static/img/distributed-full.svg" data-background-size="contain"></section>
+
+                <!-- ====================== Section 3 ===================== -->
+                <section>
+                    <h3 class="discrete">0. machine learning? wat?</h3>
+                    <h3 class="discrete">1. Comment faire du machine learning</h3>
+                    <h3 class="discrete">2. Comment faire du machine learning</h3>
+                    <h3>3. Superman</h3>
+                </section>
+
+                <section data-background-image="static/img/glassdoor.png" data-background-size="contain"></section>
+
+                <section>
+                    <h3>Programmation</h3>
+                    <h3>Machine learning</h3>
+                    <h3>Stats</h3>
+                    <h3>Calculs distribués</h3>
+                    <h3>Gestion de bases de données</h3>
+                </section>
+
+                <section data-background-image="static/img/superman.jpg"></section>
+                <section data-background-image="static/img/jyn.jpg"></section>
+                
+                <section data-background-image="static/img/superheroes.png">
+                    <h2 class="fragment">AI will eat the world</h2>
+                </section>
+                <section data-background-image="static/img/superheroes.png">
+                    <h2 class="fragment">With great power come great responsibilities</h2>
+                    <p class="fragment">« À qui l’on a beaucoup donné, on demandera beaucoup », Luc 12:48</p>
+                </section>
+                <section>
+                    <!--TODO améliorer image-->
+                    <img src="static/img/ohyoujustquoted.jpg">
+                </section>
+
+                <section>
+                    <table>
+                        <tr>
+                            <th>Qui recrute ?</th>
+                            <th>Pour faire quoi ?</th>
+                        </tr>
+                        <tr>
+                            <td>Google</td>
+                            <td class="fragment">de la pub</td>
+                        </tr>
+                        <tr>
+                            <td>Facebook</td>
+                            <td class="fragment">de la pub</td>
+                        </tr>
+                        <tr>
+                            <td>Criteo</td>
+                            <td class="fragment">de la pub</td>
+                        </tr>
+                        <tr>
+                            <td>le Bon Coin</td>
+                            <td class="fragment">de la pub</td>
+                        </tr>
+                        <tr>
+                            <td>La DGSE</td>
+                            <td class="fragment">de la surveillance généralisée</td>
+                        </tr>
+                        <tr>
+                            <td>Les banques</td>
+                            <td class="fragment">de la pub, de la finance (...)</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section data-background="static/img/dropbox-ocr.png" data-background-size="contain"></section>
+                <section data-background="static/img/google-unsupervised.png" data-background-size="contain"></section>
+
+                <section data-background-image="static/img/king-kong-vs-godzilla.jpg">
+                    <table>
+                        <tr>
+                            <th>Algorithmique</th>
+                            <td>Concurrence possible</td>
+                        </tr>
+                        <tr>
+                            <th>Collection de données</th>
+                            <td>Concurrence envisageable</td>
+                        </tr>
+                        <tr>
+                            <th>Puissance de calcul</th>
+                            <td>Concurrence impossible</td>
+                        </tr>
+                    </table>
+                </section>
+
+                <section>
+                    <h3 class="fragment">Assumez les conséquences</h3>
+                    <h3 class="fragment">Faites-les payer <span class="orange">UN MAX</span></h3>
+                </section>
+
+                <section>
+                  <h3>Pour ceux qui n'ont rien suivi</h3>
+                  <p class="fragment">Collectez vos données :<br>fichiers de logs + syslog/Kafka ➡️ disque/HDFS</p>
+                  <p class="fragment">Posez des questions sur vos données</p>
+                  <p class="fragment">Répondez aux questions : scikit-learn / Spark</p>
+                  <p class="fragment">Passez à l'échelle</p>
+                </section>
+
+                <section data-background-image="static/img/megapiranha.jpg">
+                    <h2>Vous n'en avez pas assez ?</h2>
+                    <p><i class="fa fa-envelope"></i> ilovemegadata@behmo.com</p>
+                    <p><i class="fa fa-slideshare"></i> Slides : <a href="https://regisb.github.io/megadatavsgiantalgorithms">https://regisb.github.io/megadatavsgiantalgorithms</a></p>
+                    <table class="small-text">
+                        <tr>
+                            <td colspan="2"><i class="fa fa-graduation-cap"></i> Cours Data Architect @ Openclassrooms</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://openclassrooms.com/courses/realisez-des-calculs-distribues-sur-des-donnees-massives">Réalisez des calculs distribués sur des données massives</a></td>
+                            <td class="fragment">Pas besoin d'algo moi je brute-force avec Hadoop &amp; Spark</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://openclassrooms.com/courses/gerez-des-flux-de-donnees-temps-reel">Gérez des flux de données temps réel</a></td>
+                            <td class="fragment">PLUS VITE QUE LA LUMIÈRE avec Kafka &amp; Storm</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://openclassrooms.com/courses/creez-votre-data-lake">Créez votre data lake</a></td>
+                            <td class="fragment">J'ai 100 To de données mais je m'en fous j'ai HDFS</td>
+                        </tr>
+                        <tr>
+                            <td><a href="https://openclassrooms.com/courses/maitrisez-les-bases-de-donnees-nosql">Maîtrisez les bases de données NoSQL</a></td>
+                            <td class="fragment">Mettez-vous en plein les poches avec MongoDb et ElasticSearch</td>
+                        </tr>
+                    </table>
+                    <p><i class="fa fa-video-camera"></i> Videos : <a href="https://dataarchitect.minutebutterfly.com/">https://dataarchitect.minutebutterfly.com/</a></p>
+                </section>
+            </div>
+        </div>
+        <script src="static/js/head.min.js"></script>
+        <script src="static/js/reveal.js"></script>
+        <script src="static/js/jquery-3.2.1.min.js"></script>
+        <script src="static/js/highlight.min.js"></script>
+        <script>
+            Reveal.initialize({
+                controls: false,
+                history: true,
+                transition: 'fade',
+                  dependencies: [
+                    { src: 'static/plugin/notes/notes.js', async: true },
+                  ],
+            });
+
+            // rainbowify stuff
+            var rainbowPos = 0;
+            $(".rainbow").each(function(index, elt) {
+                var colors = ["red", "orange", "yellow", "green", "blue", "magenta", "purple"];
+                var content = "";
+                var letters = elt.textContent.split("");
+                for(var i = 0; i < letters.length; i++) {
+                    var color = colors[rainbowPos % colors.length];
+                    content += "<span style=\"color: " + color + ";\">" + letters[i] + "<\/span>";
+                    rainbowPos += 1;
+                }
+                $(elt).html(content);
+            });
+        </script>
+        <script>hljs.initHighlightingOnLoad();</script>
+    </body>
+</html>
